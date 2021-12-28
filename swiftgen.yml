@@ -1,0 +1,6 @@
+xcassets:
+  - paths:
+    - Application/Assets.xcassets
+    outputs:
+    - templateName: Swift4
+      output: Application/Resources/Generated.swift

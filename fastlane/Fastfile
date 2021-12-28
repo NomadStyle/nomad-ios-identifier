@@ -1,0 +1,28 @@
+default_platform(:ios)
+
+platform :ios do
+
+  desc "Install all the required deps"
+  private_lane :install_deps do 
+    cocoapods(
+      try_repo_update_on_error: true
+    )
+  end
+
+  desc "Runs the tests locally"
+  lane :tests do
+    install_deps
+    
+    run_tests(
+      scheme: "Core",
+      output_types: 'html',
+      output_files: 'tests.html',
+      device: 'iPhone 12',
+      code_coverage: true
+    )
+  end
+  
+  lane :swift_lint do 
+    swiftlint
+  end 
+end

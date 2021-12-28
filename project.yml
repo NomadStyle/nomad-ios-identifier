@@ -1,0 +1,106 @@
+name: NomadBook
+options:
+  useTabs: true
+  indentWidth: 2
+  tabWidth: 2
+  settingPresets: all
+  createIntermediateGroups: true
+settings:
+  base:
+    VERSIONING_SYSTEM: apple-generic
+targets:
+  Core:
+    type: framework
+    platform: iOS
+    deploymentTarget: "14.0"
+    settings:
+      base:
+        SUPPORTS_MACCATALYST: false
+        CODE_SIGN_STYLE: Automatic
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        PRODUCT_BUNDLE_IDENTIFIER: ee.nomadstyle.core
+        INFOPLIST_FILE: Core/Info.plist
+        TARGETED_DEVICE_FAMILY: 1
+    scheme:
+      gatherCoverageData: true
+      testTargets:
+        - Core Tests
+    sources:
+      - path: Core
+  Core Tests:
+    templates: 
+      - FrameworkTests
+    templateAttributes:
+      testableHostTarget: NomadBook
+  NomadBook:
+    templates:
+      - Application
+      
+targetTemplates:
+  FrameworkTests:
+    type: bundle.unit-test
+    platform: iOS
+    settings:
+      base:
+        SUPPORTS_MACCATALYST: false
+        CODE_SIGN_STYLE: Automatic
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        PRODUCT_BUNDLE_IDENTIFIER: ee.nomadstyle.core.tests
+        INFOPLIST_FILE: Tests/Info.plist
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/${testableHostTarget}.app/${testableHostTarget}
+        # No need to expose target API
+        BUNDLE_LOADER: ""
+    dependencies:
+      - target: ${testableHostTarget}
+    sources:
+      - Tests
+  Application:
+    type: application
+    platform: iOS
+    deploymentTarget: "14.0"
+    settings:
+      base:
+        SUPPORTS_MACCATALYST: false
+        TARGETED_DEVICE_FAMILY: 1
+        INFOPLIST_FILE: Configuration/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: ee.nomadstyle.nomadbook
+    dependencies:
+      - target: Core
+        embed: true
+        codeSign: true
+    sources:
+      - path: Application
+    # This enables to export some of the variables      
+    preBuildScripts:
+      - name: SwiftGen
+        script: ${PODS_ROOT}/SwiftGen/bin/swiftgen --verbose
+    # Add swiftlint to the post compilation step of the project     
+    postCompileScripts:
+      - name: SwiftLink Autocorrect
+        script: ${PODS_ROOT}/SwiftLint/swiftlint autocorrect
+      - name: SwiftLint Rules
+        script: ${PODS_ROOT}/SwiftLint/swiftlint
+    #Add the additional errors/warnings to the project output when there are some temp comments left    
+    postBuildScripts:
+      - name: Project Lint
+        script: |
+          KEYWORDS="STUB:|WARNING:|TODO:|FIXME:|DevTeam:|\?\?\?:" 
+          find "${SRCROOT}" \( -name "*.h" -or -name "*.m" -or -name "*.swift" \) \ 
+            -not -path "${SRCROOT}/Pods/*" -print0 | xargs -0 egrep --with-filename \
+            --line-number --only-matching "($KEYWORDS).*\$" | perl -p -e "s/($KEYWORDS)/1: warning: \$1/"
+schemes:
+  NomadBook:
+    templates:
+      - DefaultScheme
+    templateAttributes:
+      targetName: NomadBook
+schemeTemplates:
+  DefaultScheme:
+    build:
+      targets:
+        ${targetName}: all
+    run:
+      environmentVariables:
+        OS_ACTIVITY_MODE: disable
+    test: 
+      gatherCoverageData: true

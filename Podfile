@@ -15,10 +15,16 @@ def infrastructure_pods
 end
 
 def shared_pods
+  pod 'EasyPeasy'
 end
 
 target 'NomadBook' do
   shared_pods
+end
+
+target 'Integration' do
+  shared_pods
+  podspec :name => 'NomadIdentifierSDK'
 end
 
 target 'Core' do

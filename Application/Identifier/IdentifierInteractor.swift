@@ -22,7 +22,6 @@ class IdentifierInteractor: IdentifierInteractable {
             switch result {
             case .success(let identifier):
                 view?.updateIdentifier(identifier.value)
-                break
             case .failure(let error):
                 print("Error while fetching the error: \(error.localizedDescription)")
             }

@@ -12,6 +12,10 @@ public class NomadIdentifierSDK {
         provider = IdentifierProviderImpl()
     }
 
+    /**
+    Get Device ID
+    - Parameter completion: will return the result of the query
+    */
     public func queryForIdentifier(completion: IdentificationQueryCompletion) {
         let identifier = provider.provideIdentifier()
 

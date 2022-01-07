@@ -1,10 +1,12 @@
 PODS:
+  - EasyPeasy (1.10.0)
   - Nimble (9.0.0)
   - Quick (2.2.1)
   - SwiftGen (6.4.0)
   - SwiftLint (0.42.0)
 
 DEPENDENCIES:
+  - EasyPeasy
   - Nimble (= 9.0.0)
   - Quick (= 2.2.1)
   - SwiftGen (= 6.4.0)
@@ -12,17 +14,19 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - EasyPeasy
     - Nimble
     - Quick
     - SwiftGen
     - SwiftLint
 
 SPEC CHECKSUMS:
+  EasyPeasy: b9b1bae024d21a7dfa9bad26d6826d88348cc6f1
   Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
   Quick: f5754d69b7013f5864c29aab9ae6f0c79c5bc200
   SwiftGen: 67860cc7c3cfc2ed25b9b74cfd55495fc89f9108
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
 
-PODFILE CHECKSUM: 7fb06e75f4fc7d618cd8cf49db74c40926de1e71
+PODFILE CHECKSUM: 2870d215cbbad06adb1c0c228632753f44c0be5c
 
 COCOAPODS: 1.9.3

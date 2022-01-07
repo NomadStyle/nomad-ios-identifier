@@ -35,7 +35,9 @@ targets:
   NomadBook:
     templates:
       - Application
-      
+  Integration:
+    templates:
+      - Integration
 targetTemplates:
   FrameworkTests:
     type: bundle.unit-test
@@ -54,7 +56,7 @@ targetTemplates:
       - target: ${testableHostTarget}
     sources:
       - Tests
-  Application:
+  Integration:
     type: application
     platform: iOS
     deploymentTarget: "14.0"
@@ -64,10 +66,22 @@ targetTemplates:
         TARGETED_DEVICE_FAMILY: 1
         INFOPLIST_FILE: Configuration/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: ee.nomadstyle.nomadbook
+        CODE_SIGN_ENTITLEMENTS: Configuration/NomadBook.entitlements
     dependencies:
       - target: Core
-        embed: true
-        codeSign: true
+    sources:
+      - path: Application
+  Application:
+    type: application
+    platform: iOS
+    deploymentTarget: "14.0"
+    settings:
+      base:
+        SUPPORTS_MACCATALYST: false
+        TARGETED_DEVICE_FAMILY: 1
+        INFOPLIST_FILE: Configuration/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: ee.nomadstyle.integration
+        CODE_SIGN_ENTITLEMENTS: Configuration/Integration.entitlements
     sources:
       - path: Application
     # This enables to export some of the variables      
@@ -94,6 +108,12 @@ schemes:
       - DefaultScheme
     templateAttributes:
       targetName: NomadBook
+  Integration:
+    templates:
+      - DefaultScheme
+    templateAttributes:
+      targetName: Integration
+
 schemeTemplates:
   DefaultScheme:
     build:

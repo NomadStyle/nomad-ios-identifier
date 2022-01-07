@@ -27,10 +27,6 @@ class IdentifierViewController: UIViewController {
     }
 
     required init?(coder _: NSCoder) { fatalError("init(coder:) has not been implemented") }
-
-    @objc private func updateIdentifier() {
-        interactor.updateIdentifier()
-    }
 }
 
 private final class IdentifierView: UIView {
@@ -61,10 +57,6 @@ private final class IdentifierView: UIView {
 
         textView.text = "Placeholder for identifier"
         textView.font = UIFont.systemFont(ofSize: 13)
-    }
-
-    func setActionCallback(callback: () -> Void, forButton: UIButton) {
-
     }
 
     required init?(coder _: NSCoder) { fatalError("init(coder:) has not been implemented") }
